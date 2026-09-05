@@ -1,4 +1,8 @@
-'use client';
-import { motion, useReducedMotion } from 'framer-motion';
-import { fadeUp, viewport } from '@/lib/motion';
-export function Reveal({ children, className }: { children: React.ReactNode; className?: string }) { const reduced = useReducedMotion(); return <motion.div className={className} variants={fadeUp} initial={reduced ? false : 'hidden'} whileInView="show" viewport={viewport}>{children}</motion.div>; }
+import { clsx } from 'clsx';
+
+// No client JavaScript: the reveal is a CSS scroll-driven animation. Browsers
+// without `animation-timeline` simply render the content, so a heading can
+// never be stranded at opacity 0 by a slow bundle or a deep link.
+export function Reveal({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={clsx('reveal', className)}>{children}</div>;
+}

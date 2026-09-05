@@ -48,6 +48,19 @@ confidentiality the deployed site does not have.
 To set them for deployment: *Settings → Secrets and variables → Actions →
 Variables → New repository variable*.
 
+### Brand assets
+
+Two optional PNGs are detected at build time, the same way for both: drop the
+file in and rebuild, no code change needed.
+
+| File | Effect when present |
+| --- | --- |
+| `public/brand/logo.png` | Replaces the text wordmark in the header and footer. Width and height are read from the PNG header. |
+| `public/brand/og.png` | Adds `og:image`/`twitter:image` and switches the Twitter card to `summary_large_image`. Use 1200x630. |
+
+Without `og.png` the site still has title and description tags, but links shared
+on WhatsApp, LinkedIn or Instagram render without a preview image.
+
 ### GitHub Pages and the base path
 
 Project sites are served from a subpath (`https://<username>.github.io/<repo>/`),
