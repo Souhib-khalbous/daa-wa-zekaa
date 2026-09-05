@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Pull requests build but never deploy, so a change is verified before it
+  # reaches main and the author sees a check on the PR.
+  pull_request:
+    branches: [main, dev]
   workflow_dispatch:
 
 # Least privilege: read the source, mint an OIDC token, publish a Pages artifact.
@@ -11,27 +15,31 @@ permissions:
   pages: write
   id-token: write
 
-# A superseded deploy has nothing worth finishing, so cancel it.
+# Keyed by ref so a pull request build never cancels a production deploy.
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
 
       - name: Configure Pages
         id: pages
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
 
       - run: npm ci
+
+      - run: npm run lint
+      - run: npm run typecheck
 
       - name: Build static export
         env:
@@ -52,11 +60,13 @@ jobs:
         run: touch out/.nojekyll
 
       - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
         with:
           path: out
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
