@@ -131,3 +131,33 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
     }
   }
 }
+
+/* Dark theme. The palette tokens are redefined rather than renamed, so every
+   existing rule follows automatically. `data-theme` is set by an inline script
+   before first paint, resolving a stored choice or the system preference. */
+:root[data-theme='light'] { color-scheme: light; }
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --blue-900: #060D16; --blue-700: #8FB6EC; --blue-500: #5B9BE8; --blue-100: #1B2A40;
+  --yellow-500: #FFC928; --yellow-200: #FFE68A; --yellow-50: #2A2312;
+  --paper: #0B1420; --white: #131E2E; --ink-900: #E9EEF6; --ink-500: #97A5BA; --line: #24334A;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / .35), 0 8px 24px rgb(0 0 0 / .45);
+}
+
+/* Places where a token that is light in the light theme was being used as a
+   foreground on an always-dark band, or as dark text on yellow. Flipping the
+   token alone would invert those the wrong way. */
+[data-theme='dark'] .site-header.scrolled { background: rgb(11 20 32 / .85); }
+[data-theme='dark'] .site-footer, [data-theme='dark'] .cta-band, [data-theme='dark'] .cta-band .eyebrow { color: var(--ink-500); }
+[data-theme='dark'] .site-footer .brand-wordmark, [data-theme='dark'] .site-footer .brand-wordmark span, [data-theme='dark'] .cta-band h2 { color: var(--ink-900); }
+[data-theme='dark'] .light-symbol { stroke: var(--ink-900); }
+[data-theme='dark'] .node-trigger, [data-theme='dark'] .filter-button.is-active { color: var(--blue-900); }
+[data-theme='dark'] ::selection { color: var(--blue-900); }
+
+.theme-toggle { display: inline-flex; align-items: center; justify-content: center; inline-size: var(--space-10); block-size: var(--space-10); background: transparent; border: var(--border) solid var(--line); border-radius: var(--radius-pill); color: var(--ink-500); transition: color var(--duration-nav), border-color var(--duration-nav); }
+.theme-toggle:hover { color: var(--blue-700); border-color: var(--blue-700); }
+.theme-toggle svg { inline-size: var(--space-4); block-size: var(--space-4); }
+.theme-toggle .icon-sun { display: none; }
+[data-theme='dark'] .theme-toggle .icon-sun { display: block; }
+[data-theme='dark'] .theme-toggle .icon-moon { display: none; }
+.drawer-bottom { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-5); }

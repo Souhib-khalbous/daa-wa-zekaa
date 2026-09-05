@@ -1,7 +1,7 @@
 import { bilingual as b } from '@/lib/i18n';
 export const copy = {
   skip: b('انتقل إلى المحتوى', 'Skip to content'),
-  menu: b('افتح القائمة', 'Open menu'), close: b('أغلق القائمة', 'Close menu'),
+  menu: b('افتح القائمة', 'Open menu'), close: b('أغلق القائمة', 'Close menu'), theme: b('تبديل المظهر', 'Toggle theme'),
   whatsapp: b('لنتحدث عبر واتساب', 'Let’s talk on WhatsApp'),
   devWarning: b('إعداد التطوير: أضف رقم واتساب لتفعيل التواصل.', 'Development setup: add a WhatsApp number to enable contact.'),
   unavailable: b('التواصل عبر واتساب غير متاح حالياً', 'WhatsApp contact is currently unavailable'),
