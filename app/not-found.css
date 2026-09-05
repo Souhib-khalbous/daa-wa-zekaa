@@ -1,0 +1,29 @@
+.error-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: center;
+  gap: var(--space-16);
+}
+.error-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+.error-copy h1 { font-size: var(--h2); white-space: pre-line; }
+.error-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-block-size: var(--nav-height);
+}
+.error-map { color: var(--blue-700); text-align: center; }
+.error-number { font-size: clamp(7rem, 16vw, 14rem); line-height: 1; font-weight: 800; }
+.error-connection { display: flex; align-items: center; gap: var(--space-6); margin-block-start: var(--space-8); }
+.error-connection i { inline-size: var(--space-8); block-size: var(--space-8); border-radius: var(--radius-node); border: var(--diagram-stroke) solid var(--blue-500); }
+.error-connection i:last-child { background: var(--yellow-500); border-color: var(--yellow-500); }
+.error-connection span { flex: 1; border-block-start: var(--diagram-stroke) dashed var(--blue-500); opacity: var(--edge-opacity); }
+.error-footer { color: var(--ink-500); padding-block: var(--space-8); border-block-start: var(--border) solid var(--line); }
+@media (max-width: 767px) {
+  .error-grid { grid-template-columns: 1fr; gap: var(--space-12); }
+}

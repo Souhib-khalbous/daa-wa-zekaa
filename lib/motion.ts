@@ -1,0 +1,12 @@
+import type { Variants } from 'framer-motion';
+export const EASE = [0.22, 1, 0.36, 1] as const;
+export const fadeUp: Variants = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } } };
+export const stagger: Variants = { show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } } };
+export const springSoft = { type: 'spring', stiffness: 260, damping: 26 } as const;
+export const axis = (dir: 'rtl' | 'ltr') => dir === 'rtl' ? -1 : 1;
+export const timing = { page: 0.4, edge: 1.2, packet: 2.4, edgeStagger: 0.08, drawerDelay: 0.12, drawerStagger: 0.06 } as const;
+export const viewport = { once: true, amount: 0.3 } as const;
+export const pageTransition = { initial: { opacity: 0, y: 8 }, animate: { opacity: 1, y: 0 }, transition: { duration: timing.page, ease: EASE } };
+export const buttonPress = { scale: 0.97 };
+export const drawerMotion = (dir: 'rtl' | 'ltr') => ({ hidden: { x: `${-100 * axis(dir)}%` }, show: { x: 0, transition: { duration: timing.page, ease: EASE } } });
+export const drawerItems: Variants = { show: { transition: { delayChildren: timing.drawerDelay, staggerChildren: timing.drawerStagger } } };

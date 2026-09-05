@@ -1,0 +1,66 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Least privilege: read the source, mint an OIDC token, publish a Pages artifact.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# A superseded deploy has nothing worth finishing, so cancel it.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - run: npm ci
+
+      - name: Build static export
+        env:
+          GITHUB_PAGES: 'true'
+          # Repo variables, not secrets: both are NEXT_PUBLIC_ values that are
+          # inlined into the shipped HTML, so marking them secret would only
+          # hide them from the people maintaining the site.
+          # base_url is the Pages origin this deploy will publish to, used when
+          # the variable is unset so canonical tags can never fall back wrong.
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || steps.pages.outputs.base_url }}
+          NEXT_PUBLIC_WHATSAPP_NUMBER: ${{ vars.NEXT_PUBLIC_WHATSAPP_NUMBER }}
+          NEXT_PUBLIC_INSTAGRAM_URL: ${{ vars.NEXT_PUBLIC_INSTAGRAM_URL }}
+        run: npm run build
+
+      # public/.nojekyll already ships into out/. This is the belt-and-braces
+      # copy, so a Pages runner never serves _next/ through Jekyll.
+      - name: Ensure .nojekyll
+        run: touch out/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
