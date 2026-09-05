@@ -1,0 +1,1 @@
+export function BidiText({ text }: { text: string }) { return <>{text.split(/([A-Za-z0-9][A-Za-z0-9 .&+·/–-]*[A-Za-z0-9]|[A-Za-z0-9])/g).map((part, i) => /^[A-Za-z0-9]/.test(part) ? <span dir="ltr" className="inline-ltr" key={i}>{part}</span> : part)}</>; }
