@@ -61,6 +61,20 @@ file in and rebuild, no code change needed.
 Without `og.png` the site still has title and description tags, but links shared
 on WhatsApp, LinkedIn or Instagram render without a preview image.
 
+### Theme
+
+The header has a light/dark toggle. An inline script in the layout resolves the
+theme before first paint - a stored choice in `localStorage` if there is one,
+otherwise the visitor's `prefers-color-scheme` - and sets `data-theme` on
+`<html>`, so there is no flash of the wrong theme on load.
+
+Dark mode is implemented by redefining the palette custom properties under
+`:root[data-theme='dark']`, so ordinary rules need no changes. Only a handful
+of places need an explicit dark override: where a token that is light in the
+light theme is used as a foreground on an always-dark band (the footer and CTA
+band), or as dark text on yellow. Those overrides sit together at the end of
+`app/globals.css`.
+
 ### GitHub Pages and the base path
 
 Project sites are served from a subpath (`https://<username>.github.io/<repo>/`),
